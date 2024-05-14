@@ -1,0 +1,4 @@
+initial begin
+    $dumpfile("test.vcd");
+    $dumpvars;
+end
