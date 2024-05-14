@@ -21,6 +21,11 @@ their testbench to dump the waveforms so that it is accessible by gtkwave. Other
 is designed to pause before testbench grading and prompts the user to add code to the testbench manually 
 before continuing the grading. 
 
+## Things to note:
+
+* Our golden testbenches and design names need to match exactly as given in the lab manual
+* Preferable to ask students to include the text in vcdCmd.txt in their testbench to avoid 
+modifying student code. 
 
 ## Script flow
 
