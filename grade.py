@@ -9,15 +9,15 @@ import subprocess
 import glob
 
 # Global variables
-expectedFileList = ["fa.v", "fa_tb.v", "fa4.v", "fa4_tb.v", "mux21.v", "mux21_tb.v", "mux41.v", "mux41_tb.v"]
+expectedFileList = ["ALU.v", "ALU_tb.v"]
 gradingSrc = 'Lab1-grading'
 
 designGradingFolder = 'designGrading'
-gradingTb = 'tb_grading_with_rubric.v'
-designFileList = ["fa.v", "fa4.v", "mux21.v", "mux41.v"]
+gradingTb = 'tb_ALU.v'
+designFileList = ["ALU.v"]
 
 tbGradingFolder = 'tbGrading'
-tbFileList = ["fa_tb.v", "fa4_tb.v", "mux21_tb.v", "mux41_tb.v"]
+tbFileList = ["ALU_tb.v"]
 
 failFile = 'failList.csv'
 gradeFile = 'gradeList.csv'
@@ -134,10 +134,10 @@ def gradeDesign(submissionFolder):
                 output = output.decode()
                 print(output)
                 os.system("rm a.out")
-            partGrade += int(input("Enter grade for %s: " % (testPair[0])))
+            partGrade += float(input("Enter grade for %s: " % (testPair[0])))
     
     print("Partial Grade for student: %d" % partGrade)
-    designGrade = int(input("Enter Design grade for student: "))
+    designGrade = float(input("Enter Design grade for student: "))
     
     return designGrade
 
@@ -176,7 +176,7 @@ def gradeTestbench(submissionFolder):
         input("Press Enter to continue")
     
     os.system("rm test.vcd a.out")
-    tbGrade = int(input("Enter Testbench grade for student: "))
+    tbGrade = float(input("Enter Testbench grade for student: "))
     return tbGrade
 
 # Extracting the code. 
