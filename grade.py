@@ -9,20 +9,19 @@ import subprocess
 import glob
 
 # Global variables
-expectedFileList = ["fa.v", "fa_tb.v", "fa4.v", "fa4_tb.v", "mux21.v", "mux21_tb.v", "mux41.v", "mux41_tb.v"]
-gradingSrc = 'Lab1-grading'
 
 designGradingFolder = 'designGrading'
-gradingTb = 'tb_grading_with_rubric.v'
-designFileList = ["fa.v", "fa4.v", "mux21.v", "mux41.v"]
+gradingTb = 'tb_with_rubric.v'
+designFileList = ["FlipFlop.v", "InstMem.v", "RegFile.v", "ImmGen.v", "Mux.v", "ALU.v", "DataMem.v", "Datapath.v"]
 
 tbGradingFolder = 'tbGrading'
-tbFileList = ["fa_tb.v", "fa4_tb.v", "mux21_tb.v", "mux41_tb.v"]
+tbFileList = []
 
 failFile = 'failList.csv'
 gradeFile = 'gradeList.csv'
 
 manualGradingFolder = 'manualGrading'
+expectedFileList = designFileList + tbFileList
 
 # Function to confirm expected files present
 def checkVerilogFiles(folder, expectList):
@@ -101,7 +100,8 @@ def gradeDesign(submissionFolder):
     compileCmd = "iverilog " + " ".join(compileArgs)
     retCode = os.system(compileCmd) 
     if retCode:
-        manual = True
+        #disabling manual grading for lab4
+        manual = False
         input("Compilation failed ... Check terminal for more information")
     else:
         runSim = subprocess.Popen("./a.out" , stdout=subprocess.PIPE)
@@ -223,14 +223,14 @@ for zipFile in zipFiles:
         autoFail = True
 
     # Grading the testbench
-    try:
+    # try:
         
-        tbGrade = gradeTestbench(submissionFolder)
-    except Exception as ex:
-        print("Encountered exception while grading testbench for %s" % originalSubmissionFolder)
-        csvStr = ','.join([originalSubmissionFolder, str(ex)]) + "\n" 
-        failFp.write(csvStr)
-        autoFail = True
+    #     tbGrade = gradeTestbench(submissionFolder)
+    # except Exception as ex:
+    #     print("Encountered exception while grading testbench for %s" % originalSubmissionFolder)
+    #     csvStr = ','.join([originalSubmissionFolder, str(ex)]) + "\n" 
+    #     failFp.write(csvStr)
+    #     autoFail = True
     
     reportGrade = int(input("Enter the Report Grade for student: "))
     comments = input("Enter comments if any: ")
