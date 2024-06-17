@@ -100,8 +100,7 @@ def gradeDesign(submissionFolder):
     compileCmd = "iverilog " + " ".join(compileArgs)
     retCode = os.system(compileCmd) 
     if retCode:
-        #disabling manual grading for lab4
-        manual = False
+        manual = True
         input("Compilation failed ... Check terminal for more information")
     else:
         runSim = subprocess.Popen("./a.out" , stdout=subprocess.PIPE)
@@ -115,26 +114,20 @@ def gradeDesign(submissionFolder):
     if manual:
         # Setup grading folder
         copyFiles(src=submissionFolder, dest=manualGradingFolder, fileList=designFileList)
-        testPairList = [[desFile, 'tb_'+desFile] for desFile in designFileList]
+        compileArgs = [manualGradingFolder+"/"+file for file in designFileList]
+        compileArgs.append(manualGradingFolder+"/"+gradingTb)
 
-        for testPair in testPairList:
+        compileCmd = "iverilog " + " ".join(compileArgs)
+        retCode = os.system(compileCmd) 
+        if retCode:
+            manual = True
+            input("Compilation failed ... Check terminal for more information")
+        else:
+            runSim = subprocess.Popen("./a.out" , stdout=subprocess.PIPE)
+            output, error = runSim.communicate()
 
-            # Grading the design files
-            compileArgs = [manualGradingFolder+"/"+file for file in testPair]
-            compileCmd = "iverilog " + " ".join(compileArgs)
-            print(compileCmd)
-            retCode = os.system(compileCmd) 
-            if retCode:
-                print("Compilation failed ... Check terminal for more information")
-
-            else:
-                runSim = subprocess.Popen("./a.out" , stdout=subprocess.PIPE)
-                output, error = runSim.communicate()
-
-                output = output.decode()
-                print(output)
-                os.system("rm a.out")
-            partGrade += int(input("Enter grade for %s: " % (testPair[0])))
+            output = output.decode()
+            print(output)
     
     print("Partial Grade for student: %d" % partGrade)
     designGrade = int(input("Enter Design grade for student: "))
